@@ -1,4 +1,4 @@
-//DARK MODE
+// DARK MODE
 var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
 var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
 
@@ -48,10 +48,14 @@ const notesList = document.getElementById('notes-list');
 
 // Function to render notes
 function renderNotes(notes) {
+  const notesList = document.getElementById('notes-list');
   notesList.innerHTML = '';
   notes.forEach(note => {
     const li = document.createElement('li');
-    li.classList.add('border', 'p-2', 'bg-white', 'rounded', 'flex', 'justify-between', 'items-center');
+    li.classList.add('notes-style');
+
+    const textContainer = document.createElement('div');
+    textContainer.classList.add('text-container');
 
     const span = document.createElement('span');
     span.textContent = note.content;
@@ -59,12 +63,13 @@ function renderNotes(notes) {
     const link = document.createElement('a');
     link.href = '#';
     link.textContent = 'Delete';
-    link.classList.add('block', 'px-4', 'py-2', 'hover:bg-gray-100', 'dark:hover:bg-gray-600', 'dark:hover:text-white');
+    link.classList.add('custom-button');
     link.onclick = () => {
       deleteNoteHandler(note.id);
     };
 
-    li.appendChild(span);
+    textContainer.appendChild(span);
+    li.appendChild(textContainer);
     li.appendChild(link);
     notesList.appendChild(li);
   });
@@ -121,3 +126,79 @@ document.addEventListener('DOMContentLoaded', () => {
   const notes = getNotes();
   renderNotes(notes);
 });
+
+
+
+///
+
+const options = {
+  chart: {
+    height: "100%",
+    maxWidth: "100%",
+    type: "area",
+    fontFamily: "Inter, sans-serif",
+    dropShadow: {
+      enabled: false,
+    },
+    toolbar: {
+      show: false,
+    },
+  },
+  tooltip: {
+    enabled: true,
+    x: {
+      show: false,
+    },
+  },
+  fill: {
+    type: "gradient",
+    gradient: {
+      opacityFrom: 0.55,
+      opacityTo: 0,
+      shade: "#1C64F2",
+      gradientToColors: ["#1C64F2"],
+    },
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  stroke: {
+    width: 6,
+  },
+  grid: {
+    show: false,
+    strokeDashArray: 4,
+    padding: {
+      left: 2,
+      right: 2,
+      top: 0
+    },
+  },
+  series: [
+    {
+      name: "New users",
+      data: [500, 6418, 6456, 6526, 6356, 6456],
+      color: "#1A56DB",
+    },
+  ],
+  xaxis: {
+    categories: ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February', '07 February'],
+    labels: {
+      show: false,
+    },
+    axisBorder: {
+      show: false,
+    },
+    axisTicks: {
+      show: false,
+    },
+  },
+  yaxis: {
+    show: false,
+  },
+}
+
+if (document.getElementById("area-chart") && typeof ApexCharts !== 'undefined') {
+  const chart = new ApexCharts(document.getElementById("area-chart"), options);
+  chart.render();
+}
